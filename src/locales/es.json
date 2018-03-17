@@ -1,0 +1,14 @@
+{
+  "nav": {
+    "home": "Principal",
+    "about": "Acerca"
+  },
+  "views": {
+    "home": {
+      "hello": "Hola mundo!"
+    },
+    "about": {
+      "title": "Acerca"
+    }
+  }
+}

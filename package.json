@@ -1,0 +1,16 @@
+{
+  "name": "test-nuxt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nuxt"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "nuxt": "1.4.0",
+    "vue-i18n": "7.6.0"
+  }
+}

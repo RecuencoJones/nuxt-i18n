@@ -1,0 +1,14 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About"
+  },
+  "views": {
+    "home": {
+      "hello": "Hello World!"
+    },
+    "about": {
+      "title": "About"
+    }
+  }
+}
