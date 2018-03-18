@@ -1,8 +1,8 @@
 <template>
   <div>
     <header>
-      <nuxt-link :to="$i18n.path('index')">{{ $t('nav.home') }}</nuxt-link>
-      <nuxt-link :to="$i18n.path('about')">{{ $t('nav.about') }}</nuxt-link>
+      <nuxt-link :to="$i18n.path('lang')">{{ $t('nav.home') }}</nuxt-link>
+      <nuxt-link :to="$i18n.path('lang-about')">{{ $t('nav.about') }}</nuxt-link>
     </header>
     <section>
       <nuxt />
@@ -13,3 +13,25 @@
     </footer>
   </div>
 </template>
+
+<script>
+  export default {
+    head() {
+      const route = this.$nuxt.$route
+      const { name, params } = route
+
+      console.log(process.env.locales)
+
+      return {
+        htmlAttrs: {
+          lang: params.lang
+        },
+        link: process.env.locales.map((locale) => ({
+          rel: 'alternate',
+          hreflang: locale,
+          href: route.matched.find((match) => match.name === name).path.replace(':lang', locale)
+        }))
+      }
+    }
+  }
+</script>

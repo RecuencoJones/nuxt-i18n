@@ -1,21 +1,47 @@
 const smoosh = (array) => array[0]
-const getLanguagesFromHeader = (req) => req.headers['accept-language'].split(',')
-const extractLang = (lang) => smoosh(lang.split('-'))
+const getLangsFromReqHeader = (req) => req.headers['accept-language'].split(',').map((s) => smoosh(s.split(';')))
 
-export default function({ isHMR, isClient, isServer, app, store, route, query, req, error, redirect }) {
+function getUserLocale(route, req, isClient, locales, defaultLocale) {
+  const getLangs = () => isClient ? navigator.languages : getLangsFromReqHeader(req)
+  const isValidLang = (lang) => locales.includes(lang)
+  const getLocaleBase = (locale) => smoosh(locale.split('-'))
+
+  let locale
+  
+  if (route.params.lang) {
+    locale = route.params.lang
+  } else {
+    // get first valid lang from browser or request
+    const lang = smoosh(
+      getLangs().filter(isValidLang).map(getLocaleBase)
+    )
+
+    locale = lang
+  }
+
+  return locale || defaultLocale
+}
+
+export default function({ isHMR, isClient, app, store, route, req, error, redirect }) {
   if (isHMR) return
 
   const defaultLocale = app.i18n.fallbackLocale
-  const locale = query.lang || (isClient && extractLang(navigator.language)) || (isServer && extractLang(smoosh(getLanguagesFromHeader(req)))) || defaultLocale
-
-  if (!process.env.locales.includes(locale)) {
-    return error({ message: 'This page could not be found', statusCode: 404 })
-  }
+  const locale = getUserLocale(route, req, isClient, process.env.locales, defaultLocale)
 
   store.commit('SET_LANG', locale)
   app.i18n.locale = store.state.locale
 
-  if (locale !== defaultLocale && query.lang !== locale) {
-    return redirect(route.path, { ...query, lang: locale })
+  if (route.params.lang !== locale) {
+    const parts = route.fullPath.split('/')
+
+    console.log(parts[1])
+
+    if (!process.env.locales.includes(parts[1])) {
+      return redirect(`/${ locale }${ route.fullPath }`)
+    }
+
+    return redirect(route.fullPath)
   }
+
+
 }

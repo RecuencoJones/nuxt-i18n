@@ -1,3 +1,5 @@
+const locales = ['en', 'es']
+
 module.exports = {
   srcDir: './src',
   build: {
@@ -6,8 +8,8 @@ module.exports = {
   head: {
     title: 'Nuxt i18n',
     meta: [
-      //{ charset, utf-8 },
-      //{ viewport, max-size=1,initial-scale=1 }
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width,initial-scale=1' }
     ]
   },
   router: {
@@ -17,9 +19,9 @@ module.exports = {
     '~/plugins/i18n.js'
   ],
   env: {
-    locales: ['en', 'es']
+    locales
   },
   generate: {
-    routes: ['/', '/about']
+    routes: ['/en', '/en/about', '/es', '/es/about']
   }
 }

@@ -1,3 +1,4 @@
-<template>
-  <div>{{ $t('views.about.title') }}</div>
-</template>
+<script>
+import about from '~/pages/_lang/about.vue'
+export default about
+</script>

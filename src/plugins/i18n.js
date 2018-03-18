@@ -15,14 +15,14 @@ export default ({ app, store }) => {
     messages
   })
 
-  app.i18n.path = (name, query = {}) => {
-    if (!query.lang) {
-      query.lang = app.i18n.locale
+  app.i18n.path = (name, params = {}) => {
+    if (!params.lang) {
+      params.lang = app.i18n.locale
     }
 
     return {
       name,
-      query
+      params
     }
   }
 }
