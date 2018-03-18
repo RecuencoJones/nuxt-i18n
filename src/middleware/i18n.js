@@ -1,10 +1,9 @@
-const smoosh = (array) => array[0]
-const getLangsFromReqHeader = (req) => req.headers['accept-language'].split(',').map((s) => smoosh(s.split(';')))
+const getLangsFromReqHeader = (req) => req.headers['accept-language'].split(',').map((s) => s.split(';').smoosh())
 
 function getUserLocale(route, req, isClient, locales, defaultLocale) {
   const getLangs = () => isClient ? navigator.languages : getLangsFromReqHeader(req)
   const isValidLang = (lang) => locales.includes(lang)
-  const getLocaleBase = (locale) => smoosh(locale.split('-'))
+  const getLocaleBase = (locale) => locale.split('-').smoosh()
 
   let locale
   
@@ -12,9 +11,7 @@ function getUserLocale(route, req, isClient, locales, defaultLocale) {
     locale = route.params.lang
   } else {
     // get first valid lang from browser or request
-    const lang = smoosh(
-      getLangs().filter(isValidLang).map(getLocaleBase)
-    )
+    const lang = getLangs().filter(isValidLang).map(getLocaleBase).smoosh()
 
     locale = lang
   }
@@ -33,8 +30,6 @@ export default function({ isHMR, isClient, app, store, route, req, error, redire
 
   if (route.params.lang !== locale) {
     const parts = route.fullPath.split('/')
-
-    console.log(parts[1])
 
     if (!process.env.locales.includes(parts[1])) {
       return redirect(`/${ locale }${ route.fullPath }`)
