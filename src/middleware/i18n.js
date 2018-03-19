@@ -1,4 +1,4 @@
-const getLangsFromReqHeader = (req) => req.headers['accept-language'].split(',').map((s) => s.split(';').smoosh())
+const getLangsFromReqHeader = (req) => req ? req.headers['accept-language'].split(',').map((s) => s.split(';').smoosh()) : []
 
 function getUserLocale(route, req, isClient, locales, defaultLocale) {
   const getLangs = () => isClient ? navigator.languages : getLangsFromReqHeader(req)
